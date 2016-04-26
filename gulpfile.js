@@ -10,12 +10,12 @@ var gulp      = require('gulp'),
 
 var paths = {
   build:    '_site',
-  css:      '_site/assets/css',
-  images:   ['_assets/**/*.jpg'],
   sass:     ['_sass'],
-  js:       '/assets/js',
-  scripts:  ['_assets/js/*.js'],
-  svgs:     '_assets/svg/*.svg'
+  images:   ['assets/**/*.jpg'],
+  scripts:  ['assets/js/*.js'],
+  svgs:     'assets/svg/*.svg',
+  css:      'assets/css',
+  js:       'assets/js'
 };
 
 var messages = {
@@ -52,15 +52,15 @@ gulp.task('sass', function () {
   return gulp.src(paths.sass + '/**/*.{scss,sass}')
     .pipe(sass({
       includePaths: [paths.sass] }).on('error', errorHandler))
+    .pipe(gulp.dest(paths.build + "/" + paths.css))
     .pipe(gulp.dest(paths.css))
-    .pipe(gulp.dest('_assets/css'))
     .pipe(browserSync.reload({stream:true}));
-    del([paths.build + '/css']);
+    // del([paths.build + '/css']);
 });
 
 gulp.task('js', function() {
   return gulp.src(paths.scripts)
-    .pipe(gulp.dest(paths.build + paths.js))
+    .pipe(gulp.dest(paths.build + "/" + paths.js))
     .pipe(browserSync.reload({stream:true}));
 })
 
