@@ -10,8 +10,8 @@
   <meta property="og:url" content="{{ site.url }}">
   <meta property="og:site_name" content="{{ site.title }}">
   <meta property="og:type" content="website">
-
-  <link type="text/css" rel="stylesheet" href="assets/css/all.css">
+  {% assign asset_path = "/assets" %}
+  <link type="text/css" rel="stylesheet" href="{{ asset_path | append: '/css/all.css'}}">
 
   {% assign stylesheets = page.stylesheets %}
   {% if stylesheets %}

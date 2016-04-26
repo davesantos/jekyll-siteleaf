@@ -2,6 +2,7 @@ var gulp      = require('gulp'),
     browserSync = require('browser-sync'),
     changed   = require('gulp-changed'),
     cp        = require('child_process'),
+    del = require('del'),
     gutil     = require('gulp-util'),
     prettify  = require('gulp-prettify'),
     removeEmptyLines = require('gulp-remove-empty-lines'),
@@ -34,7 +35,7 @@ gulp.task('jekyll-build', function (done) {
     .on('close', done);
 });
 
-gulp.task('jekyll-rebuild', ['jekyll-build'], function() {
+gulp.task('jekyll-rebuild', ['jekyll-build', 'sass', 'js'], function() {
   browserSync.reload();
 });
 
@@ -52,8 +53,9 @@ gulp.task('sass', function () {
     .pipe(sass({
       includePaths: [paths.sass] }).on('error', errorHandler))
     .pipe(gulp.dest(paths.css))
-    .pipe(browserSync.reload({stream:true}))
-    .pipe(gulp.dest('_assets/css'));
+    .pipe(gulp.dest('_assets/css'))
+    .pipe(browserSync.reload({stream:true}));
+    del([paths.build + '/css']);
 });
 
 gulp.task('js', function() {
@@ -73,7 +75,7 @@ gulp.task('indent', function(){
     .pipe(gulp.dest(paths.build));
 });
 
-gulp.task('serve', ['sass', 'js', 'jekyll-build'], function() {
+gulp.task('serve', ['jekyll-build', 'sass', 'js' ], function() {
   browserSync.init({
     server: {
       baseDir: paths.build
